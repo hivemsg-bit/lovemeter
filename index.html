@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Love Meter - Apne Pyaar Ka Percentage Jaano</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Apne aur apne partner ke naam se love percentage calculate karein. Find out your love compatibility and bonding score for free on our Love Meter.">
+    <meta name="keywords" content="love meter, love calculator, pyaar meter, love percentage, online love test, couple compatibility, rishta meter">
+
+    <!-- Google AdSense code yahan paste karein (jab approval mil jaye) -->
+
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            touch-action: manipulation;
+        }
+        @keyframes pop-in {
+            0% { transform: scale(0.5); opacity: 0; }
+            70% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .animate-pop-in {
+            animation: pop-in 0.6s ease-out forwards;
+        }
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+        .animate-heartbeat {
+            animation: heartbeat 1.5s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-red-100 via-pink-100 to-rose-200 min-h-screen flex flex-col p-4">
+
+    <main class="flex-grow flex items-center justify-center">
+        <div class="w-full max-w-md mx-auto bg-white/80 backdrop-blur-sm rounded-3xl shadow-2xl shadow-rose-200 p-6 md:p-8 text-center border border-white">
+            
+            <div class="flex justify-center mb-4">
+                <svg class="w-16 h-16 text-red-500 animate-heartbeat" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path></svg>
+            </div>
+
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-2">Love Meter</h1>
+            <p class="text-gray-600 mb-6">Apne rishte ki gehrayi ko parkhein!</p>
+
+            <div class="space-y-4">
+                <input id="name1" type="text" placeholder="Aapka Naam" class="w-full px-4 py-3 text-lg bg-white/70 border-2 border-rose-200 rounded-xl focus:ring-2 focus:ring-rose-400 focus:border-rose-400 transition duration-300 outline-none text-center">
+                <input id="name2" type="text" placeholder="Partner Ka Naam" class="w-full px-4 py-3 text-lg bg-white/70 border-2 border-rose-200 rounded-xl focus:ring-2 focus:ring-rose-400 focus:border-rose-400 transition duration-300 outline-none text-center">
+            </div>
+
+            <button id="calculateBtn" class="w-full mt-6 bg-gradient-to-r from-red-500 to-pink-500 text-white font-bold text-lg py-3 px-6 rounded-xl hover:scale-105 transform transition-transform duration-300 shadow-lg hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-red-300">
+                Calculate Love %
+            </button>
+
+            <div id="result" class="hidden mt-8">
+                <div class="bg-rose-50 border-2 border-dashed border-rose-300 rounded-2xl p-6 animate-pop-in">
+                    <p class="text-gray-700 text-lg mb-2">Aapke Pyaar ka Score:</p>
+                    <p id="percentage" class="text-6xl md:text-7xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-pink-600 mb-3">0%</p>
+                    <p id="message" class="text-lg font-medium text-gray-800 px-4"></p>
+                </div>
+                <button id="shareBtn" class="w-full mt-6 bg-gradient-to-r from-green-400 to-blue-500 text-white font-bold text-lg py-3 px-6 rounded-xl hover:scale-105 transform transition-transform duration-300 shadow-lg hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-green-300">
+                    Share Karein
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <footer class="text-center p-4">
+        <div class="text-gray-700 text-sm">
+            <a href="#" id="aboutLink" class="hover:underline mx-2">About Us</a> |
+            <a href="#" id="privacyLink" class="hover:underline mx-2">Privacy Policy</a>
+        </div>
+    </footer>
+
+    <!-- Modals -->
+    <div id="messageModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden z-50">
+        <div class="bg-white rounded-2xl p-6 text-center shadow-xl transform transition-all max-w-sm w-full">
+            <p id="modalText" class="text-lg text-gray-700 mb-4"></p>
+            <button id="modalCloseBtn" class="bg-red-500 text-white font-bold py-2 px-6 rounded-lg">Okay</button>
+        </div>
+    </div>
+    
+    <div id="contentModal" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 hidden z-50">
+        <div class="bg-white rounded-2xl p-6 shadow-xl transform transition-all max-w-2xl w-full text-left overflow-y-auto max-h-[80vh]">
+            <div class="flex justify-between items-center mb-4 border-b pb-2">
+                <h2 id="modalTitle" class="text-2xl font-bold text-gray-800"></h2>
+                <button id="contentModalCloseBtn" class="text-gray-500 hover:text-gray-800 text-3xl font-light">&times;</button>
+            </div>
+            <div id="modalContent" class="text-gray-700 space-y-3 prose"></div>
+        </div>
+    </div>
+
+    <script>
+        const name1Input = document.getElementById('name1');
+        const name2Input = document.getElementById('name2');
+        const calculateBtn = document.getElementById('calculateBtn');
+        const resultDiv = document.getElementById('result');
+        const percentageText = document.getElementById('percentage');
+        const messageText = document.getElementById('message');
+        const shareBtn = document.getElementById('shareBtn');
+        
+        // Modals
+        const messageModal = document.getElementById('messageModal');
+        const modalText = document.getElementById('modalText');
+        const modalCloseBtn = document.getElementById('modalCloseBtn');
+        const contentModal = document.getElementById('contentModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalContent = document.getElementById('modalContent');
+        const contentModalCloseBtn = document.getElementById('contentModalCloseBtn');
+
+        let finalResultText = '';
+
+        // Function to show custom alert messages
+        function showModal(message) {
+            modalText.textContent = message;
+            messageModal.classList.remove('hidden');
+        }
+        modalCloseBtn.addEventListener('click', () => messageModal.classList.add('hidden'));
+
+        calculateBtn.addEventListener('click', () => {
+            const name1 = name1Input.value.trim();
+            const name2 = name2Input.value.trim();
+
+            if (name1 === '' || name2 === '') {
+                showModal('Please dono naam enter karein!');
+                return;
+            }
+            
+            const combinedNames = (name1 + name2).toLowerCase().replace(/\s/g, '');
+            let sum = 0;
+            for (let i = 0; i < combinedNames.length; i++) {
+                sum += combinedNames.charCodeAt(i);
+            }
+            
+            const percentage = 40 + (sum % 61);
+            let message = '';
+            
+            if (percentage < 50) message = "Thodi koshish aur, shayad baat ban jaye!";
+            else if (percentage < 75) message = "Ek acchi shuruaat! Aapka connection strong ho raha hai.";
+            else if (percentage < 90) message = "Wow! Aap dono ek doosre ke liye bane ho.";
+            else message = "Made for each other! Aapki jodi salamat rahe!";
+
+            let currentPercent = 0;
+            const interval = setInterval(() => {
+                currentPercent++;
+                percentageText.textContent = `${currentPercent}%`;
+                if (currentPercent >= percentage) clearInterval(interval);
+            }, 20);
+            
+            messageText.textContent = message;
+            resultDiv.classList.remove('hidden');
+            resultDiv.scrollIntoView({ behavior: 'smooth' });
+
+            finalResultText = `${name1} ❤️ ${name2} ka Love Score ${percentage}% hai! ${message} Aap bhi apna love score check karein!`;
+        });
+
+        shareBtn.addEventListener('click', async () => {
+            const shareData = {
+                title: 'Love Meter Result',
+                text: finalResultText,
+                url: window.location.href
+            };
+            try {
+                if (navigator.share) {
+                    await navigator.share(shareData);
+                } else {
+                    await navigator.clipboard.writeText(finalResultText + " " + window.location.href);
+                    showModal('Result clipboard par copy ho gaya hai! Ab aap ise kahin bhi paste kar sakte hain.');
+                }
+            } catch (err) {
+                console.error("Share failed:", err);
+                try {
+                    await navigator.clipboard.writeText(finalResultText + " " + window.location.href);
+                    showModal('Result clipboard par copy ho gaya hai! Ab aap ise kahin bhi paste kar sakte hain.');
+                } catch (copyErr) {
+                    showModal('Sharing is not supported on your browser.');
+                }
+            }
+        });
+
+        // --- Footer Links and Content Modal Logic ---
+        const pageContent = {
+            about: {
+                title: 'About Us',
+                content: `<p>Humara Love Meter ek fun aur entertainment tool hai jise dosto aur couples ke beech pyaar aur compatibility ko ek mazedaar tareeke se dikhane ke liye banaya gaya hai.</p><p>Yeh calculator ek algorithm par kaam karta hai jo naamo ke basis par ek random percentage generate karta hai. Iska result sirf manoranjan ke liye hai aur ise seriously nahi liya jaana chahiye. Enjoy!</p>`
+            },
+            privacy: {
+                title: 'Privacy Policy',
+                content: `<p>Aapki privacy hamare liye mahatvapurna hai.</p>
+                <ul>
+                    <li><strong>Data Collection:</strong> Hum aapke dwara enter kiye gaye naamo ko apne server par store ya save nahi karte hain. Saari calculation aapke browser mein hi hoti hai.</li>
+                    <li><strong>Cookies:</strong> Hum third-party services jaise Google AdSense ka upyog kar sakte hain, jo ads dikhane ke liye cookies ka istemal kar sakti hain.</li>
+                    <li><strong>Changes to Policy:</strong> Hum is policy ko samay-samay par update kar sakte hain.</li>
+                </ul>`
+            }
+        };
+
+        function showContentModal(type) {
+            modalTitle.textContent = pageContent[type].title;
+            modalContent.innerHTML = pageContent[type].content;
+            contentModal.classList.remove('hidden');
+        }
+
+        document.getElementById('aboutLink').addEventListener('click', (e) => {
+            e.preventDefault();
+            showContentModal('about');
+        });
+        document.getElementById('privacyLink').addEventListener('click', (e) => {
+            e.preventDefault();
+            showContentModal('privacy');
+        });
+        contentModalCloseBtn.addEventListener('click', () => {
+            contentModal.classList.add('hidden');
+        });
+
+    </script>
+</body>
+</html>
+
